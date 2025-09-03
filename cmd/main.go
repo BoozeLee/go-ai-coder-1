@@ -81,15 +81,20 @@ type GitHubSearchResult struct {
 
 // Configuration structure
 type Config struct {
-	Verbose       bool
-	Model         string
-	MaxTokens     int
-	Temperature   float64
-	OllamaURL     string
-	GitHubToken   string
-	LearningDir   string
-	CacheEnabled  bool
-	AutoSave      bool
+	Verbose         bool
+	Model           string
+	MaxTokens       int
+	Temperature     float64
+	OllamaURL       string
+	GitHubToken     string
+	LearningDir     string
+	CacheEnabled    bool
+	AutoSave        bool
+	// Cloud AI Configuration
+	UseCloudAI      bool
+	CloudAIURL      string
+	CloudAPIKey     string
+	FallbackToLocal bool
 }
 
 func loadConfig() *Config {
@@ -108,18 +113,28 @@ func loadConfig() *Config {
 	cacheEnabled := flag.Bool("cache", true, "Enable response caching")
 	autoSave := flag.Bool("autosave", true, "Auto-save conversations")
 	
+	// Cloud AI flags
+	useCloudAI := flag.Bool("cloud", false, "Use cloud AI service")
+	cloudAIURL := flag.String("cloud-url", "", "Cloud AI service URL")
+	cloudAPIKey := flag.String("cloud-key", "", "Cloud AI API key")
+	fallbackToLocal := flag.Bool("fallback", true, "Fallback to local AI if cloud fails")
+	
 	flag.Parse()
 
 	config := &Config{
-		Verbose:      *verbose,
-		Model:        *model,
-		MaxTokens:    *maxTokens,
-		Temperature:  *temperature,
-		OllamaURL:    *ollamaURL,
-		GitHubToken:  os.Getenv("GITHUB_TOKEN"),
-		LearningDir:  *learningDir,
-		CacheEnabled: *cacheEnabled,
-		AutoSave:     *autoSave,
+		Verbose:         *verbose,
+		Model:           *model,
+		MaxTokens:       *maxTokens,
+		Temperature:     *temperature,
+		OllamaURL:       *ollamaURL,
+		GitHubToken:     os.Getenv("GITHUB_TOKEN"),
+		LearningDir:     *learningDir,
+		CacheEnabled:    *cacheEnabled,
+		AutoSave:        *autoSave,
+		UseCloudAI:      *useCloudAI,
+		CloudAIURL:      *cloudAIURL,
+		CloudAPIKey:     *cloudAPIKey,
+		FallbackToLocal: *fallbackToLocal,
 	}
 
 	// Check for GitHub token
@@ -134,11 +149,26 @@ func loadConfig() *Config {
 func main() {
 	config := loadConfig()
 	
-	// Create OpenAI client with Ollama base URL
-	client := openai.NewClient(
-		option.WithAPIKey("ollama"), // Dummy key, Ollama doesn't require authentication
-		option.WithBaseURL(config.OllamaURL),
-	)
+	// Create AI client (cloud or local)
+	var aiClient interface{}
+	
+	if config.UseCloudAI && config.CloudAIURL != "" {
+		// Use cloud AI with fallback
+		aiClient = NewCloudAIClient(
+			config.CloudAIURL,
+			config.OllamaURL,
+			config.CloudAPIKey,
+			config.FallbackToLocal,
+		)
+		fmt.Println("🌐 Using Cloud AI with local fallback")
+	} else {
+		// Use local AI only
+		aiClient = openai.NewClient(
+			option.WithAPIKey("ollama"), // Dummy key, Ollama doesn't require authentication
+			option.WithBaseURL(config.OllamaURL),
+		)
+		fmt.Println("🏠 Using Local AI only")
+	}
 
 	// Display startup information
 	fmt.Println("🤖 GitHub Enterprise AI Coding Agent")

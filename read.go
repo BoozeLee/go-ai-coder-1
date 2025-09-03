@@ -1,4 +1,4 @@
-package main
+reapackage main
 
 import (
 	"bufio"
