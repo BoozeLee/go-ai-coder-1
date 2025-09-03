@@ -12,10 +12,12 @@ Go AI Coder is a sophisticated, enterprise-grade AI coding assistant that combin
 ## ✨ Features
 
 ### 🧠 **AI-Powered Intelligence**
-- **Local AI Processing** - Uses Ollama for complete privacy
+- **Hybrid AI Architecture** - Local Ollama + Cloud AI with smart fallback
+- **Go-Specific Models** - Fine-tuned models optimized for Go development
 - **Context-Aware Conversations** - Remembers conversation history
 - **Intelligent Code Analysis** - Understands and explains your code
 - **Learning Mode** - Continuously learns from Go ecosystem
+- **Cloud AI Service** - Enterprise-grade cloud deployment ready
 
 ### 🔧 **GitHub Integration**
 - **Repository Analysis** - Analyze your GitHub repositories
@@ -30,10 +32,13 @@ Go AI Coder is a sophisticated, enterprise-grade AI coding assistant that combin
 - **Curated Resources** - Access to best Go learning materials
 
 ### ⚙️ **Enterprise Features**
+- **Multi-Cloud Deployment** - AWS, GCP, Azure support
+- **Custom Model Training** - Train Go-specific AI models
 - **Secure Configuration** - Encrypted settings and session management
 - **Command-Line Interface** - Full CLI with flags and options
 - **Conversation Persistence** - Auto-save and history management
 - **Extensible Architecture** - Plugin-ready design
+- **Production Ready** - Complete deployment and monitoring
 
 ## 🚀 Quick Start
 
@@ -69,12 +74,42 @@ go-ai-coder
 # Use custom model
 go-ai-coder --model codellama:13b --tokens 4000
 
+# Use cloud AI with fallback
+go-ai-coder --cloud --cloud-url "https://your-service.com" --fallback
+
 # Enable verbose mode
 go-ai-coder --verbose
 
 # Show help
 go-ai-coder --help
 ```
+
+## ☁️ Cloud AI Deployment
+
+### Quick Cloud Setup
+
+```bash
+# Set up cloud environment
+export CLOUD_PROVIDER="aws"  # or gcp/azure
+export GITHUB_TOKEN="your_token"
+./setup-cloud-environment.sh
+
+# Deploy cloud AI service
+./deploy-cloud-ai.sh
+
+# Train custom Go model
+source go-ai-env/bin/activate
+python go-ai-model-trainer.py
+```
+
+### Cloud AI Features
+- **Hybrid Architecture** - Local + Cloud AI with smart fallback
+- **Go-Specific Models** - Fine-tuned for Go development
+- **Multi-Cloud Support** - Deploy on AWS, GCP, or Azure
+- **Production Ready** - Complete monitoring and scaling
+- **Custom Training** - Train models on your Go codebase
+
+For detailed setup instructions, see [CLOUD_AI_SETUP_GUIDE.md](CLOUD_AI_SETUP_GUIDE.md)
 
 ## 📖 Documentation
 
