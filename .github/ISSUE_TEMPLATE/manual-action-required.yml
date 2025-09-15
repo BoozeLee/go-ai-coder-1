@@ -1,0 +1,76 @@
+name: "Manual Action Required"
+description: "Use this template when Copilot coding agents cannot resolve an issue automatically and human intervention is required."
+title: "[MANUAL ACTION REQUIRED] <short description>"
+labels: ["manual-action", "needs-triage", "copilot-flagged"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🚨 Manual Action Required
+        A blocking issue has occurred that Copilot coding agent cannot resolve automatically.
+        Please review the details below and take appropriate action.
+
+  - type: input
+    id: problem
+    attributes:
+      label: "Problem Summary"
+      description: "Provide a clear, concise description of the failure or issue."
+      placeholder: "e.g., Docker build fails due to missing dependency context"
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: "Context & Logs"
+      description: "Paste relevant logs, error outputs, and command attempts that led to this issue."
+      placeholder: "Include exact error messages here"
+    validations:
+      required: true
+
+  - type: textarea
+    id: attempts
+    attributes:
+      label: "Automated Attempts"
+      description: "List the steps Copilot agent already attempted before triggering manual action."
+      placeholder: "- Retried build\n- Ran go mod tidy\n- Verified file paths"
+    validations:
+      required: true
+
+  - type: textarea
+    id: recommendation
+    attributes:
+      label: "Recommended Action"
+      description: "If possible, provide hints or suggestions for resolving this issue."
+      placeholder: "Human developer needs to update Dockerfile base image"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: "Priority Level"
+      description: "How critical is this issue?"
+      options:
+        - Critical - Blocks core functionality
+        - High - Blocks development workflow  
+        - Medium - Blocks optional features
+        - Low - Documentation or enhancement
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: verification
+    attributes:
+      label: "Pre-submission Checklist"
+      description: "Confirm these steps were completed before creating this issue"
+      options:
+        - label: "Verified problem is not in 'DO NOT attempt' list"
+          required: true
+        - label: "Checked for existing issues with same problem"
+          required: true
+        - label: "Attempted standard troubleshooting (max 2 retries)"
+          required: true
+        - label: "Gathered complete diagnostic information"
+          required: true

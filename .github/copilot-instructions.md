@@ -102,16 +102,42 @@
 
 ### Troubleshooting
 
-#### Common Issues
-- **Build Error "undefined: NewCloudAIClient"**: Use github_ai_agent.go instead of cmd/main.go
-- **"No .env file found"**: Normal warning, app works with environment variables
-- **"GITHUB_TOKEN not set"**: Optional, only needed for GitHub API features
-- **"AIMLAPI_API_KEY required"**: Only needed for certain AI features, not core functionality
+#### Standard Resolution Steps
+1. **First Attempt**: Follow standard troubleshooting for the specific error
+2. **Second Attempt**: If first attempt fails, retry once with additional diagnostic info
+3. **Manual Action Required**: If both attempts fail, create manual action issue
+
+#### Common Issues and Resolutions
+
+**Build Error "undefined: NewCloudAIClient"**
+- **Resolution**: Use github_ai_agent.go instead of cmd/main.go
+- **If Persists**: Create manual action issue for missing function implementation
+
+**"No .env file found"**
+- **Resolution**: Normal warning, app works with environment variables
+- **Action**: No intervention needed
+
+**"GITHUB_TOKEN not set"**
+- **Resolution**: Optional, only needed for GitHub API features
+- **Action**: Set environment variable if GitHub integration needed
+
+**"AIMLAPI_API_KEY required"**
+- **Resolution**: Only needed for certain AI features, not core functionality
+- **Action**: Set if cloud AI features required
+
+**Docker Build Failures**
+- **Resolution**: Currently known issue with dependency context
+- **Action**: **CREATE MANUAL ACTION ISSUE** - do not attempt workarounds
+
+**Performance Degradation (>3x expected time)**
+- **Resolution**: Log warning but allow completion
+- **If Exceeds**: Create manual action issue with performance metrics
 
 #### Working Around Build Issues
 - Focus on github_ai_agent.go which builds successfully
 - Use individual Go file builds rather than module builds
 - Skip Docker and complex build processes until dependencies are fixed
+- **When all workarounds fail**: Create manual action issue with full diagnostic info
 
 ### Development Guidelines
 - **Primary executable**: Always use github_ai_agent.go for development and testing
@@ -126,3 +152,92 @@
 - **Logs**: Application outputs to stdout/stderr
 
 Remember: This is an AI-powered coding assistant that combines file operations, GitHub integration, and AI learning capabilities. The core file and directory operations work independently of AI services.
+
+## Manual Action Required Workflow
+
+When encountering issues that cannot be resolved automatically, Copilot agents **MUST** create a GitHub issue to request manual intervention.
+
+### When to Create Manual Action Issues
+
+**ALWAYS create a manual action issue when:**
+- Build failures persist after standard troubleshooting attempts
+- Missing dependencies or functions that require code changes  
+- Docker context or environment configuration issues
+- Repository setup problems requiring human decision-making
+- Security or permission issues that need manual review
+- Performance degradation that exceeds validated timeout thresholds by 3x or more
+
+### Manual Action Issue Creation Process
+
+**Step 1: Stop Automated Attempts**
+- Do not retry failed operations more than 2 times
+- Do not attempt workarounds for explicitly flagged broken paths
+- Document all attempted solutions before escalating
+
+**Step 2: Create GitHub Issue Using Template**
+- Use the "Manual Action Required" issue template
+- Include specific error messages and log outputs
+- List all automated attempts made
+- Provide clear reproduction steps
+
+**Step 3: Issue Format Requirements**
+```
+Title: [MANUAL ACTION REQUIRED] <concise problem description>
+Labels: manual-action, needs-triage, copilot-flagged
+```
+
+**Required Issue Content:**
+- **Problem Summary**: Clear description of the blocking issue
+- **Context & Logs**: Complete error messages and relevant output
+- **Automated Attempts**: List of all retry attempts and troubleshooting steps taken
+- **Recommended Action**: Specific suggestions for human resolution (if known)
+
+### Example Manual Action Scenarios
+
+**Example 1: Missing Function Error**
+```
+Title: [MANUAL ACTION REQUIRED] Fix missing NewCloudAIClient function in cmd/main.go
+Problem: Build fails due to undefined function
+Context: Error during 'go build ./cmd/main.go'
+Attempts: Verified imports, checked function definitions, searched codebase
+Recommendation: Implement missing NewCloudAIClient function or remove reference
+```
+
+**Example 2: Docker Build Failure**
+```
+Title: [MANUAL ACTION REQUIRED] Resolve Docker dependency context issues
+Problem: Docker build fails with dependency resolution errors
+Context: 'make docker' command fails consistently
+Attempts: Verified Dockerfile syntax, checked base image, tried dependency cache clear
+Recommendation: Review Docker build context and dependency management strategy
+```
+
+### Automation Guidelines for Manual Actions
+
+**Before Creating Issue:**
+1. Verify the problem is not in the "DO NOT attempt" list
+2. Check if issue already exists with same problem signature
+3. Attempt standard troubleshooting (max 2 retries)
+4. Gather complete diagnostic information
+
+**After Creating Issue:**
+1. Stop all related automated attempts on that component
+2. Log the issue number in any related error messages
+3. Continue with other unrelated tasks if possible
+4. Monitor issue for resolution before reattempting
+
+### Human Response Expectations
+
+**Priority Levels:**
+- **Critical**: Blocks core functionality (within 24 hours)
+- **High**: Blocks development workflow (within 48 hours) 
+- **Medium**: Blocks optional features (within 1 week)
+- **Low**: Documentation or enhancement requests (within 2 weeks)
+
+**Resolution Process:**
+1. Human reviews issue and validates problem
+2. Human implements fix or provides specific guidance
+3. Human updates issue with resolution steps
+4. Copilot agent validates fix and closes issue
+
+This workflow ensures efficient escalation of problems that require human expertise while maintaining clear communication and avoiding endless automated retry loops.
